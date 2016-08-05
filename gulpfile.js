@@ -12,9 +12,9 @@ var runSequence = require('run-sequence');
 var del = require('del');
 
 gulp.task('sass', function(){
-  return gulp.src('icbf_fe/includes/*.scss')
+  return gulp.src('fe-dev/includes/*.scss')
     .pipe(sass()) 
-    .pipe(gulp.dest('icbf_fe/includes/'))
+    .pipe(gulp.dest('fe-dev/includes/'))
     .pipe(browserSync.reload({
       stream: true
     }))
@@ -23,44 +23,44 @@ gulp.task('sass', function(){
 gulp.task('browserSync', function() {
   browserSync.init({
     server: {
-      baseDir: 'icbf_fe'
+      baseDir: 'fe-dev'
     },
   })
 });
 
 gulp.task('prefixear', function () {
-  return gulp.src('icbf_fe/includes/css-main.css')
+  return gulp.src('fe-dev/includes/css-main.css')
     .pipe(autoprefixer({
       browsers: ['last 3 versions'],
       cascade: false
     }))
-    .pipe(gulp.dest('icbf_dist/includes/'));
+    .pipe(gulp.dest('fe_dist/includes/'));
 });
 
 gulp.task('useref', function(){
-  return gulp.src('icbf_fe/*.html')
+  return gulp.src('fe-dev/*.html')
     .pipe(useref())
     .pipe(gulpif('*.css', cssnano()))
-    .pipe(gulp.dest('icbf_dist'));
+    .pipe(gulp.dest('fe_dist'));
 }); 
 
 gulp.task('images', function(){
-  return gulp.src('icbf_fe/media/**/*.+(png|jpg|jpeg|gif|svg)')
+  return gulp.src('fe-dev/media/**/*.+(png|jpg|jpeg|gif|svg)')
     .pipe(cache(imagemin({
       interlaced: true
     })))
-    .pipe(gulp.dest('icbf_dist/media'))
+    .pipe(gulp.dest('fe_dist/media'))
 });
 
 gulp.task('copyincludes', function(){
-  return gulp.src(['icbf_fe/includes/js-modernizr.js',
-    'icbf_fe/includes/js-main.js',
-    'icbf_fe/includes/js-jquery.js'  ])
-    .pipe(gulp.dest('icbf_dist/includes/'));
+  return gulp.src(['fe-dev/includes/js-modernizr.js',
+    'fe-dev/includes/js-main.js',
+    'fe-dev/includes/js-jquery.js'  ])
+    .pipe(gulp.dest('fe_dist/includes/'));
 });
 
 gulp.task('clean', function() {
-  return del.sync('icbf_dist');
+  return del.sync('fe_dist');
 })
 
 
@@ -68,9 +68,9 @@ gulp.task('clean', function() {
 MAIN WATCH TASK 
 ==================================== */
 gulp.task('watch', ['browserSync', 'sass'], function(){
-  gulp.watch('icbf_fe/**/*.scss', ['sass']);
-  gulp.watch('icbf_fe/*.html', browserSync.reload); 
-  gulp.watch('icbf_fe/includes/**/*.js', browserSync.reload);
+  gulp.watch('fe-dev/**/*.scss', ['sass']);
+  gulp.watch('fe-dev/*.html', browserSync.reload); 
+  gulp.watch('fe-dev/includes/**/*.js', browserSync.reload);
 });
 
 
